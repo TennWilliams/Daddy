@@ -109,6 +109,20 @@
     gap: 24px;
     animation: fadeUp 0.8s 0.2s ease both;
     backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+  }
+
+  .beat-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  @media (min-width: 500px) {
+    .beat-controls {
+      width: auto;
+    }
   }
 
   .play-btn {
@@ -142,7 +156,8 @@
   }
 
   .beat-desc {
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 600;
     color: var(--smoke);
   }
 
@@ -370,10 +385,11 @@
     <div class="beat-info">
         <div class="beat-title">My First OG</div>
         <div class="beat-desc">A Daddy's Girl Rap 🎵 — Dedicated to My Daddy</div>
-      </div><br>
-    <button class="play-btn" id="playBtn" onclick="toggleBeat()" title="Play/Pause Beat">▶</button>
-    <button class="play-btn" id="restartBtn" onclick="restartSong()" title="Restart Song" style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:22px; font-weight: bold;">⟳</button>
-    
+      </div>
+    <div class="beat-controls">
+        <button class="play-btn" id="playBtn" onclick="toggleBeat()" title="Play/Pause Beat">▶</button>
+        <button class="play-btn" id="restartBtn" onclick="restartSong()" title="Restart Song" style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:22px; font-weight: bold;">⟳</button>
+    </div>
     <div class="waveform">
       <div class="bar"></div>
       <div class="bar"></div>
