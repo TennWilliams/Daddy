@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My First OG – A Father's Day Rap</title>
+
+<!-- Favicons -->
+<link href="favicon.png" rel="icon">
+<link href="apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Vendor CSS Files -->
+<link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --gold: #D4A017;
+    --gold-light: #F5C842;
+    --cream: #FDF6E3;
+    --deep: #1A0A2E;
+    --purple: #3D1A5C;
+    --smoke: #8B7FA8;
+    --green: #2D6A4F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(61,26,92,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(212,160,23,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at 60% 30%, rgba(45,106,79,0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .occasion-tag {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(212,160,23,0.4);
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 88px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), #fff8e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: #F5A0B8;
+    letter-spacing: 0.5px;
+  }
+
+  /* Beat player */
+  .beat-player {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(212,160,23,0.25);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    animation: fadeUp 0.8s 0.2s ease both;
+    backdrop-filter: blur(10px);
+  }
+
+  .play-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(212,160,23,0.4);
+  }
+  .play-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(212,160,23,0.6); }
+  .play-btn:active { transform: scale(0.96); }
+
+  .beat-info { flex: 1; min-width: 0; }
+
+  .beat-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .beat-desc {
+    font-size: 12px;
+    color: var(--smoke);
+  }
+
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .bar {
+    width: 4px;
+    border-radius: 2px;
+    background: var(--gold);
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+
+  .beat-player.playing .bar {
+    opacity: 1;
+    animation: pulse 0.6s ease-in-out infinite alternate;
+  }
+
+  .bar:nth-child(1) { height: 14px; animation-delay: 0s; }
+  .bar:nth-child(2) { height: 22px; animation-delay: 0.1s; }
+  .bar:nth-child(3) { height: 30px; animation-delay: 0.05s; }
+  .bar:nth-child(4) { height: 18px; animation-delay: 0.15s; }
+  .bar:nth-child(5) { height: 26px; animation-delay: 0.08s; }
+  .bar:nth-child(6) { height: 20px; animation-delay: 0.12s; }
+  .bar:nth-child(7) { height: 14px; animation-delay: 0.03s; }
+
+  @keyframes pulse {
+    from { transform: scaleY(0.5); opacity: 0.5; }
+    to { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* Song sections */
+  .song {
+    animation: fadeUp 0.8s 0.4s ease both;
+  }
+
+  .section {
+    margin-bottom: 44px;
+    position: relative;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .section-label::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  .hook .section-label { color: #F5A0B8; }
+  .hook .section-label::after { background: linear-gradient(to right, #F5A0B8, transparent); }
+  .bridge .section-label { color: #90E0C4; }
+  .bridge .section-label::after { background: linear-gradient(to right, #90E0C4, transparent); }
+
+  .lyrics {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 2.5vw, 17px);
+    line-height: 1.85;
+    color: #EDE8F5;
+  }
+
+  .lyrics .line {
+    display: block;
+    padding: 2px 0;
+    transition: color 0.3s;
+  }
+
+  .lyrics .line.highlight {
+    color: var(--gold-light);
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .lyrics .line.pink {
+    color: #F5A0B8;
+    font-style: italic;
+  }
+
+  .lyrics .line.green {
+    color: #90E0C4;
+  }
+
+  /* Hook box */
+  .hook .lyrics {
+    background: rgba(245,160,184,0.07);
+    border-left: 3px solid #F5A0B8;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+  }
+
+  /* Bridge box */
+  .bridge .lyrics {
+    background: rgba(144,224,196,0.07);
+    border-left: 3px solid #90E0C4;
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    font-style: italic;
+  }
+
+  /* Outro */
+  .outro {
+    text-align: center;
+    padding: 48px 24px;
+    border-top: 1px solid rgba(212,160,23,0.2);
+    margin-top: 16px;
+  }
+
+  .outro p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--gold-light);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+
+  .heart {
+    font-size: 32px;
+    margin-top: 20px;
+    animation: heartbeat 1.4s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.2); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.15); }
+    56% { transform: scale(1); }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0;
+    opacity: 0.3;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gold);
+  }
+  .divider span { font-size: 12px; color: var(--gold); }
+
+  /* Beat engine */
+  canvas { display: none; }
+
+  /*--------------------------------------------------------------
+# Back to top button
+--------------------------------------------------------------*/
+.back-to-top {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  right: 15px;
+  bottom: 15px;
+  z-index: 996;
+  background: #D4A017;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  transition: all 0.4s;
+}
+
+.back-to-top i {
+  font-size: 40px;
+  color: #3D1A5C;
+  line-height: 0;
+}
+
+.back-to-top:hover {
+  background: #90E0C4;
+  color: #3D1A5C;
+  bottom:1px;
+  transition: 0.4s;
+}
+
+.back-to-top.active {
+  visibility: visible;
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <header class="header">
+    <div class="occasion-tag">🎤 Father's Day 2026</div>
+    <h1>My First OG</h1>
+    <p class="subtitle">A Daddy's Girl Rap · Inspired by your favorite Rapper Snoop Dogg</p>
+  </header>
+
+  <div class="beat-player" id="beatPlayer">
+    <button class="play-btn" id="playBtn" onclick="toggleBeat()" title="Play/Pause Beat">▶</button>
+    <button class="play-btn" id="restartBtn" onclick="restartSong()" title="Restart Song" style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:22px; font-weight: bolder;">⟳</button>
+    <div class="beat-info">
+      <div class="beat-title">My First OG</div>
+      <div class="beat-desc">Tap play for A Daddy's Girl Rap 🎵 — Dedicated to My Daddy Calvin Sr.</div>
+    </div>
+    <div class="waveform">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <div class="song">
+
+    <!-- INTRO -->
+    <div class="section">
+      <div class="section-label">Intro</div>
+      <div class="lyrics">
+        <span class="line highlight">Dedicated to my first OG…</span>
+        <span class="line highlight">Happy Father's Day, Daddy.</span>
+        <span class="line highlight">This one's straight from the heart, My G…</span>
+      </div>
+    </div>
+
+    <!-- VERSE 1 -->
+    <div class="section">
+      <div class="section-label">Verse 1 — His Daily Magic</div>
+      <div class="lyrics">
+        <span class="line">Every mornin' you slide in with an inspirational word of the day,</span>
+        <span class="line">A little nugget of wisdom to carry me on my way,</span>
+        <span class="line">When the world gets heavy and I'm losin' my cool,</span>
+        <span class="line highlight">I hear your voice in my head — that's my favorite tool.</span>
+        <span class="line">You always got advice, never steer me wrong,</span>
+        <span class="line">Check in on the grandkids, make sure we all strong,</span>
+        <span class="line">Make us feel special like we matter every day,</span>
+        <span class="line highlight">That's the kinda love, Daddy, words just can't say.</span>
+      </div>
+    </div>
+
+    <!-- HOOK -->
+    <div class="section hook">
+      <div class="section-label">Hook</div>
+      <div class="lyrics">
+        <span class="line pink">You my first OG, yeah, my number one,</span>
+        <span class="line pink">My foundation, my backbone, under every sun,</span>
+        <span class="line pink">From a Daddy's girl to the woman that I am,</span>
+        <span class="line pink highlight">Everything I got — I got it from my fam.</span>
+        <span class="line pink">Thank you, Daddy, for all that you do,</span>
+        <span class="line pink">The realest love I know… is coming straight from you.</span>
+      </div>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- VERSE 2 -->
+    <div class="section">
+      <div class="section-label">Verse 2 — Atlantic City & Sports</div>
+      <div class="lyrics">
+        <span class="line">Remember Atlantic City — you at the table, in the zone,</span>
+        <span class="line">I'd creep up slow 'cause I didn't wanna be alone,</span>
+        <span class="line">You'd hand me chips just to shoo me away,</span>
+        <span class="line highlight">But Daddy, that's still one of my favorite days. 😄</span>
+        <span class="line">And sports? That was all you, from the very start,</span>
+        <span class="line">I just wanted to be near you, so I learned every part,</span>
+        <span class="line">The pick-and-roll, the blitz — I paid close attention,</span>
+        <span class="line highlight">My Daddy taught me the game — that's my greatest possession.</span>
+        <span class="line">Knicks on the court and the Cowboys on the field,</span>
+        <span class="line">Now we on the phone together, yellin' with zeal,</span>
+        <span class="line green">And THIS year, Daddy — the Knicks in the Finals?!</span>
+        <span class="line green highlight">We BEEN waitin' for this — we gon' celebrate, fo' sure!</span>
+      </div>
+    </div>
+
+    <!-- VERSE 3 -->
+    <div class="section">
+      <div class="section-label">Verse 3 — WNBA & First Seasons</div>
+      <div class="lyrics">
+        <span class="line">First year of the WNBA — you pulled up right,</span>
+        <span class="line">Season tickets, every game, side by side every night,</span>
+        <span class="line">You showed me women ballin' was worthy of the stand,</span>
+        <span class="line highlight">That's how you raised me — to know my worth, Daddy Man.</span>
+      </div>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- VERSE 4 — Deepest verse -->
+    <div class="section">
+      <div class="section-label">Verse 4 — When It Mattered Most</div>
+      <div class="lyrics">
+        <span class="line">Then the day came that changed everything for us,</span>
+        <span class="line">We lost Mama — the world went cold, I lost trust,</span>
+        <span class="line">I was devastated, broken, didn't know what to do,</span>
+        <span class="line highlight">But you didn't fold, Daddy — you held me through.</span>
+        <span class="line">You handled everything — every detail, every call,</span>
+        <span class="line">Made sure your daughter never had to fall,</span>
+        <span class="line">Graduation came — I was still in my grief,</span>
+        <span class="line">But you showed up, stood tall, and gave me relief.</span>
+        <span class="line">You didn't say much — you ain't have to, it's true,</span>
+        <span class="line highlight">Your presence was the present — that was enough to get through.</span>
+      </div>
+    </div>
+
+    <!-- BRIDGE -->
+    <div class="section bridge">
+      <div class="section-label">Bridge — For the Grandkids Too</div>
+      <div class="lyrics">
+        <span class="line">When my babies came into the world, you was right there,</span>
+        <span class="line">Even broke your leg racing to the hospital — I swear,</span>
+        <span class="line">You knew I needed Mama, so you stepped into that space,</span>
+        <span class="line highlight">Wrapped us in your love and covered every grace.</span>
+        <span class="line">You held my hand in labor and you held my heart too,</span>
+        <span class="line">Those grandkids of yours? They know what real love look like — through you.</span>
+      </div>
+    </div>
+
+    <!-- FINAL HOOK -->
+    <div class="section hook">
+      <div class="section-label">Final Hook</div>
+      <div class="lyrics">
+        <span class="line pink">You my first OG, yeah, my number one,</span>
+        <span class="line pink">My foundation, my backbone, under every sun,</span>
+        <span class="line pink">From a Daddy's girl to the woman that I am,</span>
+        <span class="line pink highlight">Everything I got — I got it from my fam.</span>
+        <span class="line pink">Thank you, Daddy, for all that you do,</span>
+        <span class="line pink">The realest love I know… is coming straight from you.</span>
+      </div>
+    </div>
+
+    <div class="divider"><span>✦</span></div>
+
+    <!-- OUTRO VERSE -->
+    <div class="section">
+      <div class="section-label">Outro — From the Heart</div>
+      <div class="lyrics">
+        <span class="line">Words can't express what you mean to me, Dad,</span>
+        <span class="line">But let me try to paint a picture of the love that we have,</span>
+        <span class="line">You lifted me up when I couldn't lift myself,</span>
+        <span class="line">You were my strength when I had nothing left on the shelf.</span>
+        <span class="line">Time keeps on moving but one thing remains the same</span>
+        <span class="line">Every win I celebrate, I'm doing it in your name.</span>
+        <span class="line">So today I'm droppin' this rap, straight from your girl,</span>
+        <span class="line">The one who's always been proud to call you her world,</span>
+        <span class="line highlight">Happy Father's Day, Daddy — you my first OG,</span>
+        <span class="line highlight">And I thank God every day… that He gave you to me.</span>
+      </div>
+    </div>
+
+    <div class="outro">
+      <p>"You were my first love,<br>My spiritual teacher,<br>My safe place."</p> 
+      <p style="font-size:14px; color: var(--smoke); font-style: normal; margin-top: 16px;">— Love Tennille, Your Daddy's Girl, Forever 💜</p>
+      <div class="heart">💜  💜</div>
+    </div>
+
+  </div>
+</div>
+
+<audio id="myAudio" src="My First OG.mp3"></audio>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center" title="Back To Top"><i class="bi bi-arrow-up-short"></i></a>
+
+<script>
+    function toggleBeat() {
+      const audio = document.getElementById('myAudio');
+      if (audio.paused) {
+        audio.play();
+        document.getElementById('playBtn').textContent = '⏸';
+        document.getElementById('beatPlayer').classList.add('playing');
+      } else {
+        audio.pause();
+        document.getElementById('playBtn').textContent = '▶';
+        document.getElementById('beatPlayer').classList.remove('playing');
+      }
+    }
+
+    function restartSong() {
+      const audio = document.getElementById('myAudio');
+      audio.currentTime = 0;
+      audio.play();
+      document.getElementById('playBtn').textContent = '⏸';
+      document.getElementById('beatPlayer').classList.add('playing');
+    }
+
+  </script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
