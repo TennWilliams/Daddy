@@ -385,8 +385,13 @@
     <div class="beat-info">
         <div class="beat-title">My First OG</div>
         <div class="beat-desc">A Daddy's Girl Rap 🎵 — Dedicated to My Daddy</div>
+        
     </div>
     <div class="beat-controls">
+        <div class="beat-desc" style="margin-top:4px; color: var(--gold); font-size:15px;">
+            <i class="bi bi-hourglass-split" style="color: #9B6FD4;"></i>
+            <span id="beatDuration">--:--</span>
+          </div>
         <button class="play-btn" id="playBtn" onclick="toggleBeat()" title="Play/Pause Beat">▶</button>
         <button class="play-btn" id="restartBtn" onclick="restartSong()" title="Restart Song" style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:24px; font-weight: bold;">⟳</button>
         <div class="waveform">
@@ -572,7 +577,43 @@
       document.getElementById('beatPlayer').classList.add('playing');
     }
 
-  </script>
+// Resets when song ends
+    document.getElementById('myAudio').addEventListener('ended', () => {
+        document.getElementById('playBtn').textContent = '▶';
+    document.getElementById('beatPlayer').classList.remove('playing');
+    });
+
+// Shows runtime once song loads
+    let timerInterval = null;
+  
+    function updateCountdown() {
+    const audio = document.getElementById('myAudio');
+    const remaining = audio.duration - audio.currentTime;
+    const mins = Math.floor(remaining / 60);
+    const secs = Math.floor(remaining % 60).toString().padStart(2, '0');
+    document.getElementById('beatDuration').textContent = `${mins}:${secs}`;
+    }
+
+    document.getElementById('myAudio').addEventListener('loadedmetadata', () => {
+        updateCountdown();
+    });
+
+    document.getElementById('myAudio').addEventListener('play', () => {
+        timerInterval = setInterval(updateCountdown, 500);
+    });
+
+    document.getElementById('myAudio').addEventListener('pause', () => {
+        clearInterval(timerInterval);
+    });
+
+    document.getElementById('myAudio').addEventListener('ended', () => {
+        clearInterval(timerInterval);
+        const audio = document.getElementById('myAudio');
+        const mins = Math.floor(audio.duration / 60);
+        const secs = Math.floor(audio.duration % 60).toString().padStart(2, '0');
+        document.getElementById('beatDuration').textContent = `${mins}:${secs}`;
+    });
+</script>
 
 <!-- Template Main JS File -->
 <script src="assets/js/main.js"></script>
