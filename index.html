@@ -383,15 +383,18 @@
 
   <div class="beat-player" id="beatPlayer">
     <div class="beat-info">
-        <div class="beat-title">My First OG</div>
-        <div class="beat-desc">A Daddy's Girl Rap 🎵 — Dedicated to My Daddy</div>
+        <div class="beat-title" id="beatTitle">My First OG</div>
+        <div class="beat-desc">A Daddy's Girl Rap/Song 🎵 </div>
     </div>
     <div class="beat-controls">
         <div class="beat-desc" style="margin-top:4px; color: var(--gold); font-size:16px;">
             <i class="bi bi-hourglass-split" style="color: #9B6FD4;"></i>
             <span id="beatDuration">--:--</span>
           </div>
-        <button class="play-btn" id="playBtn" onclick="toggleBeat()" title="Play/Pause Beat">▶</button>
+          <button class="play-btn" id="rapBtn" onclick="playVersion('rap')" title="Play Rap Version" 
+          style="font-size:13px; width:auto; padding: 0 16px; border-radius:20px;">🎤 Rap</button>
+        <button class="play-btn" id="gospelBtn" onclick="playVersion('gospel')" title="Play Gospel Version" 
+          style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:13px; width:auto; padding: 0 16px; border-radius:20px;">🙏🏾 Gospel</button>
         <button class="play-btn" id="restartBtn" onclick="restartSong()" title="Restart Song" style="background: linear-gradient(135deg, #9B6FD4, #6B3FA0); font-size:24px; font-weight: bold;">⟳</button>
         <div class="waveform">
             <div class="bar"></div>
@@ -481,7 +484,7 @@
 
     <!-- VERSE 4 — Deepest verse -->
     <div class="section">
-      <div class="section-label">Verse 4 — When It Mattered Most</div>
+      <div class="section-label">Verse 4 — When It Mattered Most 🙏🏾</div>
       <div class="lyrics">
         <span class="line">Then the day came that changed everything for us,</span>
         <span class="line">We lost Mama — the world went cold, I lost trust,</span>
@@ -534,7 +537,7 @@
         <span class="line">You were my strength when I had nothing left on the shelf.</span>
         <span class="line">Time keeps on moving but one thing remains the same</span>
         <span class="line">Every win I celebrate, I'm doing it in your name.</span>
-        <span class="line">So today I'm droppin' this rap, straight from your girl,</span>
+        <span class="line">So today I'm droppin' this rap/song, straight from your girl,</span>
         <span class="line">The one who's always been proud to call you her world,</span>
         <span class="line highlight">Happy Father's Day, Daddy — you my first OG,</span>
         <span class="line highlight">And I thank God every day… that He gave you to me.</span>
@@ -550,68 +553,91 @@
   </div>
 </div>
 
-<audio id="myAudio" src="My First OG.mp3"></audio>
+<audio id="rapVersion" src="My First OG.mp3"></audio>
+<audio id="gospelVersion" src="First OG Song.mp3"></audio>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center" title="Back To Top"><i class="bi bi-arrow-up-short"></i></a>
 
 <script>
-    function toggleBeat() {
-      const audio = document.getElementById('myAudio');
-      if (audio.paused) {
-        audio.play();
-        document.getElementById('playBtn').textContent = '⏸';
-        document.getElementById('beatPlayer').classList.add('playing');
-      } else {
-        audio.pause();
-        document.getElementById('playBtn').textContent = '▶';
-        document.getElementById('beatPlayer').classList.remove('playing');
-      }
-    }
-
-    function restartSong() {
-      const audio = document.getElementById('myAudio');
-      audio.currentTime = 0;
-      audio.play();
-      document.getElementById('playBtn').textContent = '⏸';
-      document.getElementById('beatPlayer').classList.add('playing');
-    }
-
-// Resets when song ends
-    document.getElementById('myAudio').addEventListener('ended', () => {
-        document.getElementById('playBtn').textContent = '▶';
-    document.getElementById('beatPlayer').classList.remove('playing');
-    });
-
-// Shows runtime once song loads
     let timerInterval = null;
-  
-    function updateCountdown() {
-    const audio = document.getElementById('myAudio');
-    const remaining = audio.duration - audio.currentTime;
-    const mins = Math.floor(remaining / 60);
-    const secs = Math.floor(remaining % 60).toString().padStart(2, '0');
-    document.getElementById('beatDuration').textContent = `${mins}:${secs}`;
+let activeVersion = null;
+
+function getAudio() {
+  return document.getElementById(activeVersion === 'gospel' ? 'gospelVersion' : 'rapVersion');
+}
+
+function stopAll() {
+  ['rapVersion', 'gospelVersion'].forEach(id => {
+    const a = document.getElementById(id);
+    a.pause();
+    a.currentTime = 0;
+  });
+  clearInterval(timerInterval);
+  document.getElementById('beatPlayer').classList.remove('playing');
+  document.getElementById('beatDuration').textContent = '--:--';
+}
+
+function playVersion(version) {
+  // If same version is playing, toggle pause/play
+  if (activeVersion === version) {
+    const audio = getAudio();
+    if (audio.paused) {
+      audio.play();
+      document.getElementById('beatPlayer').classList.add('playing');
+    } else {
+      audio.pause();
+      document.getElementById('beatPlayer').classList.remove('playing');
     }
+    return;
+  }
 
-    document.getElementById('myAudio').addEventListener('loadedmetadata', () => {
-        updateCountdown();
-    });
+  // Switch to new version
+  stopAll();
+  activeVersion = version;
 
-    document.getElementById('myAudio').addEventListener('play', () => {
-        timerInterval = setInterval(updateCountdown, 500);
-    });
+  // Update button labels to show which is active
+  document.getElementById('rapBtn').textContent = version === 'rap' ? '⏸ Rap' : '🎤 Rap';
+  document.getElementById('gospelBtn').textContent = version === 'gospel' ? '⏸ Gospel' : '🙏🏾 Gospel';
 
-    document.getElementById('myAudio').addEventListener('pause', () => {
-        clearInterval(timerInterval);
-    });
+  const audio = getAudio();
+  audio.play();
+  document.getElementById('beatPlayer').classList.add('playing');
 
-    document.getElementById('myAudio').addEventListener('ended', () => {
-        clearInterval(timerInterval);
-        const audio = document.getElementById('myAudio');
-        const mins = Math.floor(audio.duration / 60);
-        const secs = Math.floor(audio.duration % 60).toString().padStart(2, '0');
-        document.getElementById('beatDuration').textContent = `${mins}:${secs}`;
-    });
+  // Update beat title
+  document.getElementById('beatTitle').textContent = version === 'rap'
+    ? 'My First OG Rap'
+    : 'My First OG Gospel';
+
+  // Countdown timer
+  audio.addEventListener('loadedmetadata', updateCountdown);
+  timerInterval = setInterval(updateCountdown, 500);
+
+  audio.addEventListener('ended', () => {
+    clearInterval(timerInterval);
+    document.getElementById('beatPlayer').classList.remove('playing');
+    document.getElementById(version === 'rap' ? 'rapBtn' : 'gospelBtn').textContent = 
+      version === 'rap' ? '🎤 Rap' : '🙏🏾 Gospel';
+    updateCountdown();
+  });
+}
+
+function restartSong() {
+  if (!activeVersion) return;
+  const audio = getAudio();
+  audio.currentTime = 0;
+  audio.play();
+  document.getElementById('beatPlayer').classList.add('playing');
+}
+
+function updateCountdown() {
+  const audio = getAudio();
+  if (!audio) return;
+  const remaining = audio.duration - audio.currentTime;
+  if (isNaN(remaining)) return;
+  const mins = Math.floor(remaining / 60);
+  const secs = Math.floor(remaining % 60).toString().padStart(2, '0');
+  document.getElementById('beatDuration').textContent = `${mins}:${secs}`;
+}
 </script>
 
 <!-- Template Main JS File -->
