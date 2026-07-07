@@ -378,13 +378,12 @@
   <header class="header">
     <div class="occasion-tag">🎤 Father's Day 2026</div>
     <h1>My First OG</h1>
-    <p class="subtitle">A Daddy's Girl Rap</p>
+    <p class="subtitle">A Daddy's Girl Rap/Song</p>
   </header>
 
   <div class="beat-player" id="beatPlayer">
     <div class="beat-info">
-        <div class="beat-title" id="beatTitle">My First OG</div>
-        <div class="beat-desc">A Daddy's Girl Rap/Song 🎵 </div>
+        <div class="beat-title" id="beatTitle">My First OG 🎵</div>
     </div>
     <div class="beat-desc" style="margin-top:4px; color: var(--gold); font-size:16px;">
         <i class="bi bi-hourglass-split" style="color: #9B6FD4;"></i>
@@ -606,8 +605,8 @@ function playVersion(version) {
 
   // Update beat title
   document.getElementById('beatTitle').textContent = version === 'rap'
-    ? 'My First OG Rap'
-    : 'My First OG Gospel';
+    ? 'My First OG Rap 🎵'
+    : 'My First OG Gospel 🎵';
 
   // Countdown timer
   audio.addEventListener('loadedmetadata', updateCountdown);
